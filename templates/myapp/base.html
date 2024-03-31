@@ -4,13 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Proyecto Django</title>
-    <!-- Otros estilos globales -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <header>
-        <h1>base Html</h1>
-    </header>
-
+    
+    <header class="flex flex-col w-full">
+    <!-- Barra de Navegación -->
+    <nav class="bg-white shadow-lg">
+        <ul class="flex justify-around">
+            <li class="text-black py-4 px-6 hover:bg-gray-200">
+                <a href="{% url 'hello_world' %}">Inicio</a>
+            </li>
+            <li class="text-black py-4 px-6 hover:bg-gray-200">
+                <a href="{% url 'publishers' %}">Acerca de</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Hero con Imagen de Libros -->
+    
+</header>
+    
+    
     <main>
         {% block content %}{% endblock %}
     </main>
