@@ -3,35 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Proyecto Django</title>
+    <title>ElPoeta-Library</title>
+    <!-- Link Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+    <!-- CDN Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}  <!-- Asegúrate de incluir esta línea -->
 </head>
 <body>
     
-    <header class="flex flex-col w-full">
-    <!-- Barra de Navegación -->
-    <nav class="bg-white shadow-lg">
-        <ul class="flex justify-around">
-            <li class="text-black py-4 px-6 hover:bg-gray-200">
-                <a href="{% url 'hello_world' %}">Inicio</a>
-            </li>
-            <li class="text-black py-4 px-6 hover:bg-gray-200">
-                <a href="{% url 'publishers' %}">Acerca de</a>
-            </li>
-        </ul>
-    </nav>
-    <!-- Hero con Imagen de Libros -->
-    
-</header>
-    
+    <header class="flex flex-col w-full h-[100vh]">
+        <!-- Barra de Navegación -->
+        <nav class="bg-white shadow-lg fixed w-full h-8 shadow shadow-black flex justify-between">
+            <div class="w-[100px] flex justify-around">
+                <svg class="w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+                <a class="font-[Dancing Scipt]"  href="{% url 'home' %}">ElPoeta</a>
+            </div>
+            <ul class="flex justify-between w-60 flex align-center">
+                <li class="text-black hover:bg-gray-200">
+                    <a href="{% url 'publishers' %}">Editoriales</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Hero con Imagen de Libros -->
+        <div class="h-64 bg-cover bg-center h-full flex align-center justify-center " style="background-image: url('{% static 'images/heroLibros.jpg' %}')">
+            {% block content %}{% endblock %}
+        </div>
+        
+    </header>
     
     <main>
-        {% block content %}{% endblock %}
+        
     </main>
     
-    
     <footer>
-        
+        <!-- Contenido del pie de página -->
     </footer>
 
     <!-- Scripts globales -->
