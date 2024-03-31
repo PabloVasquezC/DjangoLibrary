@@ -1,0 +1,16 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+    <h1 class="border-2xl">Lista de Editoriales</h1>
+    <table>
+        <tr>
+            <th>Nombre</th>
+        </tr>
+        {% for editorial in editoriales %}
+        <tr>
+            <td>{{ editorial.nombre }}</td>
+            <!-- Agrega más celdas de datos si tu modelo Editorial tiene más campos -->
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
