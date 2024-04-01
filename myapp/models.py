@@ -23,6 +23,7 @@ class Producto(models.Model):
         (ENCICLOPEDIA, 'Enciclopedia'),
     ]
 
+    nombre = models.CharField(max_length=255, default='Sin nombre')
     tipo = models.CharField(max_length=2, choices=TIPO_OPCIONES, default=LIBRO)
     editorial = models.ForeignKey(Editorial, on_delete=models.PROTECT)
     autores = models.ManyToManyField(Autor)

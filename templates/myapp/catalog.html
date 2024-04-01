@@ -1,0 +1,21 @@
+{% extends 'myapp/base.html' %}
+
+{% block catalog %}
+    <div class="mt-16">
+    <h1 class="text-white font-bold text-center">Catalogo</h1>
+    
+        <table class="rounded shadow shadow-black bg-white m-4 z-10">
+            <tr>
+                <th>Catálogo</th>
+            </tr>
+            {% for producto in  productos%}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.autores }}</td>
+                <td>{{ producto.editorial }}</td>
+                <td>{{ producto.descripcion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

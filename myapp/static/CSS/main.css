@@ -1,0 +1,16 @@
+#logo-section:hover {
+    box-shadow:  4px 7px 8px black;
+
+}
+
+li:hover {
+    box-shadow:  4px 7px 8px black;
+}
+
+.table-striped tr:nth-child(odd) {
+        background-color: white; /* Filas impares con fondo blanco */
+}
+
+.table-striped tr:nth-child(even) {
+    background-color: #b3ecff; /* Filas pares con fondo celeste */
+}

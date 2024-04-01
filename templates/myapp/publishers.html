@@ -1,18 +1,20 @@
 {% extends 'myapp/base.html' %}
 
 {% block content %}
-    <div class="rounded shadow shadow-black bg-white m-10">
-         <h1 class="text-black font-bold">Lista de Editoriales</h1>
-            <table class="">
-                <tr>
-                    <th>Nombre</th>
-                </tr>
-                {% for editorial in editoriales %}
-                <tr>
-                    <td>{{ editorial.nombre }}</td>
-                    <!-- Agrega más celdas de datos si tu modelo Editorial tiene más campos -->
-                </tr>
-                {% endfor %}
-            </table>
+    <div class="mt-16">
+        <h1 class="text-white font-bold text-left text-5xl mt-10" style="font-family: 'Dancing Script'">Editoriales</h1>
+    
+        <table class="rounded-xl shadow shadow-black bg-white m-4 z-10 table-striped w-80">
+            <tr>
+                <th>Nombre</th>
+            </tr>
+            {% for editorial in editoriales %}
+            <tr class="border border-black h-8">
+                <td class="text-2xl"><a>{{ editorial.nombre }}</a></td>
+                
+                <!-- Agrega más celdas de datos si tu modelo Editorial tiene más campos -->
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}
