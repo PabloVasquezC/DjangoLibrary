@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 #logo-section:hover {
     box-shadow:  4px 7px 8px black;
 

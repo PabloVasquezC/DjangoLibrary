@@ -4,15 +4,15 @@
     <div class="mt-16">
         <h1 class="text-white font-bold text-left text-5xl mt-10" style="font-family: 'Dancing Script'">Editoriales</h1>
     
-        <table class="rounded-xl shadow shadow-black bg-white m-4 z-10 table-striped w-80">
+        <table class="rounded-xl shadow shadow-black bg-white m-4 z-10 table-striped w-auto">
             <tr>
-                <th>Nombre</th>
+                <th>Editorial</th>
+                <th>Títulos</th>
             </tr>
-            {% for editorial in editoriales %}
+            {% for editorial_info in info_editoriales %}
             <tr class="border border-black h-8">
-                <td class="text-2xl"><a>{{ editorial.nombre }}</a></td>
-                
-                <!-- Agrega más celdas de datos si tu modelo Editorial tiene más campos -->
+                <td class="text-2xl border border-black"><a>{{ editorial_info.nombre }}</a></td>
+                <td class="text-2xl border border-black">{{ editorial_info.cantidad_productos }}</td>
             </tr>
             {% endfor %}
         </table>
