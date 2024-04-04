@@ -1,27 +1,19 @@
 {% extends 'myapp/base.html' %}
 
 {% block catalog %}
-    <div class="mt-16">
-    <h1 class="text-white font-bold text-left text-5xl mt-10" style="font-family: 'Dancing Script'">Catalogo</h1>
     
-        <table class=" shadow shadow-black bg-white m-4 z-10 table-striped w-auto">
-            <tr>
-                <th class="text-2xl border border-black">Tíulo</th>
-                <th class="text-2xl border border-black">Autoría</th>
-                <th class="text-2xl border border-black">Editorial</th>
-            </tr>
-            {% for producto in productos %}
-            <tr class="border border-black h-8">
-                <td class="text-2xl border border-black">{{ producto.nombre }}</td>
-                <td class="text-2xl border border-black">
-                    {% for autor in producto.autores.all %}
-                        {{ autor.nombre }}
-                        {% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
-                <td class="text-2xl border border-black">{{ producto.editorial.nombre }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+<h1>Catálogo de productos</h1>
+    
+{% for producto in productos %}
+
+    <div class="card m-40 bg-white w-[200px] rounded border bordr-black">
+        <img src="{{ producto.fotoLink }}" class="card-img-top" alt="{{ producto.nombre }}">
+        <div class="card-body">
+            <h2 class="text-2xl font-bold text-gray-800
+            ">{{ producto.nombre }}</h2>
+            <p class="text-gray-500 text-2xl">${{ producto.precio }}</p>
+        </div>
     </div>
+
+{% endfor %}
 {% endblock %}

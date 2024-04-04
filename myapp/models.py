@@ -28,6 +28,8 @@ class Producto(models.Model):
     editorial = models.ForeignKey(Editorial, on_delete=models.PROTECT)
     autores = models.ManyToManyField(Autor)
     descripcion = models.TextField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    fotoLink = models.TextField(max_length=1000000)
     # cantidad_en_stock = models.PositiveIntegerField() # Opcional
 
     def __str__(self):

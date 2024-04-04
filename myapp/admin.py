@@ -8,3 +8,4 @@ admin.site.register(Bodega)
 admin.site.register(MovimientoProducto)
 admin.site.register(DetalleMovimiento)
 
+

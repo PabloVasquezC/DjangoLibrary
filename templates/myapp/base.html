@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,31 +19,55 @@
     {% load static %}  
     <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
 </head>
-<body>
+
+<body class="h-[2000px]">
     
-    <header class="flex flex-col w-full h-[100vh]">
+    <header class="flex align-center  flex-col w-full h-[100vh] ">
         <!-- Barra de Navegación -->
         <nav class="bg-white shadow-lg fixed w-full h-16 shadow shadow-black flex items-center px-2 justify-between">
-            
             <!-- Logo -->
-            <a  class="mx-2" href="{% url 'home' %}">
-                <div id="logo-section" class="p-2 transition flex justify-around hover:scale-[1.05] hover:border hover:border hover:border-black rounded">
-                    <svg class="w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
-                    <span class="text-3xl mx-1 " style="font-family: 'Dancing Script', cursive;">ElPoeta</span>
+            <a  class="mx-2" 
+                href="{% url 'home' %}">
+                <div 
+                    id="logo-section" 
+                    class="p-2 transition flex justify-around hover:scale-[1.05] hover:border hover:border hover:border-black rounded">
+                    <svg 
+                        class="w-8" 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 448 512"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+                    <span 
+                        class="text-3xl mx-1 " 
+                        style="font-family: 'Dancing Script', cursive;">
+                        ElPoeta
+                    </span>
                 </div>
             </a>
             
             <!-- sections -->
             <div class="flex ">
                 <ul class="flex justify-between mx-4 flex align-center " >
-                    <li style="font-family: 'Roboto Slab', serif;" class="text-black hover:bg-gray-800 rounded hover:text-white px-2 transition  ">
-                        <a class="text-2xl  " style="" href="{% url 'catalog' %}">Catálogo</a>
+                    <li 
+                        style="font-family: 'Roboto Slab', serif;" 
+                        class="text-black hover:bg-gray-800 rounded hover:text-white px-2 transition  ">
+                        <a 
+                            class="text-2xl" 
+                            href="{% url 'catalog' %}">
+                            Catálogo
+                        </a>
                     </li>  
-                    <li style="font-family: 'Roboto Slab', serif;" class=" text-black hover:bg-gray-800 rounded hover:text-white px-2 transition  ">
-                        <a class="text-2xl  " href="{% url 'publishers' %}">Editoriales</a>
+                    <li 
+                        style="font-family: 'Roboto Slab', serif;" 
+                        class=" text-black hover:bg-gray-800 rounded hover:text-white px-2 transition  ">
+                        <a 
+                            class="text-2xl" 
+                            href="{% url 'publishers' %}">Editoriales</a>
                     </li>
-                    <li style="font-family: 'Roboto Slab', serif;" class=" text-black hover:bg-gray-800 rounded hover:text-white px-2 transition  ">
-                        <a class="text-2xl  " href="{% url 'catalog' %}">Exposiciones</a>
+                    <li 
+                        style="font-family: 'Roboto Slab', serif;" 
+                        class=" text-black hover:bg-gray-800 rounded hover:text-white px-2 transition  ">
+                        <a 
+                            class="text-2xl" 
+                            href="{% url 'catalog' %}">Exposiciones</a>
                     </li>
                 </ul>
                 
@@ -54,12 +79,14 @@
                 </a>
 
             </div>
+        
         </nav>
     
         <!-- Hero con Imagen de Libros -->
-        <div class="h-64 bg-cover bg-center h-full flex align-center justify-center " style="background-image: url('{% static 'images/expocisionesHero.jpg' %}')">
-            {% block content %}{% endblock %}
-            {% block catalog %}{% endblock %}
+        <div class="flex-container mx-auto justify-center shadow-xl shadow-black flex-col transition bg-cover bg-center h-full w-full flex align-center justify-center " 
+             style="background-image: url('{% static 'images/expocisionesHero.jpg' %}')">
+             {% block content %}{% endblock %}
+             {% block catalog %}{% endblock %}
         </div>
         
     </header>
