@@ -4,16 +4,19 @@
     
 <h1>Catálogo de productos</h1>
     
-{% for producto in productos %}
+<section>
+    {% for producto in productos %}
 
-    <div class="card m-40 bg-white w-[200px] rounded border bordr-black">
+    <div class="card m-40 bg-white w-[400px] flex rounded border bordr-black">
         <img src="{{ producto.fotoLink }}" class="card-img-top" alt="{{ producto.nombre }}">
         <div class="card-body">
             <h2 class="text-2xl font-bold text-gray-800
             ">{{ producto.nombre }}</h2>
+            <hr>
             <p class="text-gray-500 text-2xl">${{ producto.precio }}</p>
         </div>
     </div>
 
-{% endfor %}
+    {% endfor %}
+</section>
 {% endblock %}

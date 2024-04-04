@@ -18,3 +18,19 @@ li:hover {
 .table-striped tr:nth-child(even) {
     background-color: #b3ecff; /* Filas pares con fondo celeste */
 }
+
+section div {
+    animation: reveal-right linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 30%;
+}
+
+@keyframes reveal-right {
+    0% {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
