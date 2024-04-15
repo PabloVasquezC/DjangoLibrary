@@ -20,11 +20,11 @@
     <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
 </head>
 
-<body class="h-[2000px]">
+<body class="">
     
     <header class="flex align-center  flex-col w-full h-[100%] ">
         <!-- Barra de Navegación -->
-        <nav class="bg-white shadow-lg fixed w-full h-16 shadow shadow-black flex items-center px-2 justify-between">
+        <nav class="bg-white shadow-lg fixed w-full h-16 shadow shadow-black flex items-center px-2 justify-between z-10">
             <!-- Logo -->
             <a  class="mx-2" 
                 href="{% url 'home' %}">
@@ -83,10 +83,10 @@
         </nav>
     
         <!-- Hero con Imagen de Libros -->
-        <div class="flex-container mx-auto justify-center shadow-xl shadow-black flex-col transition bg-cover bg-center h-full w-full flex align-center justify-center " 
-             style="background-image: url('{% static 'images/expocisionesHero.jpg' %}')">
-             {% block content %}{% endblock %}
-             {% block catalog %}{% endblock %}
+        <div class="flex-container mx-auto justify-center shadow-xl shadow-black flex-col transition bg-cover bg-center min-h-[100vh] h-auto w-full flex align-center items-center justify-center " 
+            style="background-image: url('{% static 'images/expocisionesHero.jpg' %}')">
+            {% block content %}{% endblock %}
+            {% block catalog %}{% endblock %}
         </div>
         
     </header>

@@ -19,15 +19,22 @@ li:hover {
     background-color: #b3ecff; /* Filas pares con fondo celeste */
 }
 
-section div {
+
+
+section #card {
     animation: reveal-right linear both;
     animation-timeline: view();
     animation-range: entry 20% cover 30%;
 }
 
+
+
+
+
+
 @keyframes reveal-right {
     0% {
-        transform: translateX(50px);
+        transform: translateY(50px);
         opacity: 0;
     }
     100% {
