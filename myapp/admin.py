@@ -1,11 +1,16 @@
 from django.contrib import admin
 from .models import Editorial, Autor, Producto, Bodega, MovimientoProducto, DetalleMovimiento
+from guardian.admin import GuardedModelAdmin
 
-admin.site.register(Editorial)
-admin.site.register(Autor)
-admin.site.register(Producto)
-admin.site.register(Bodega)
-admin.site.register(MovimientoProducto)
-admin.site.register(DetalleMovimiento)
+
+class ProjectAdmin(GuardedModelAdmin):
+    pass
+
+admin.site.register(Editorial, ProjectAdmin)
+admin.site.register(Autor, ProjectAdmin)
+admin.site.register(Producto, ProjectAdmin)
+admin.site.register(Bodega, ProjectAdmin)
+admin.site.register(MovimientoProducto, ProjectAdmin)
+admin.site.register(DetalleMovimiento, ProjectAdmin)
 
 
