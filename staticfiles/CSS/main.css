@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+}
+
+#logo-section:hover {
+    box-shadow:  4px 7px 8px black;
+
+}
+
+li:hover {
+    box-shadow:  4px 7px 8px black;
+}
+
+/* Filas impares */
+.table-striped tr:nth-child(odd) {
+    background-color: white;
+    cursor: pointer;    
+    
+}
+
+/* Filas pares */
+.table-striped tr:nth-child(even) {
+    background-color: #b3ecff; 
+    cursor: pointer;
+}
+
+
+
+section #card {
+    animation: reveal-right linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 30%;
+    transition: all 0.5s ease-in-out;
+    
+
+    :hover {
+        transition: 0.5ms;
+    }
+
+}
+
+#card:hover {
+    transition: all 0.5s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+@keyframes reveal-right {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -1,9 +1,13 @@
 * {
     box-sizing: border-box;
+    
 }
+
+
 
 #logo-section:hover {
     box-shadow:  4px 7px 8px black;
+
 
 }
 
@@ -11,12 +15,17 @@ li:hover {
     box-shadow:  4px 7px 8px black;
 }
 
+/* Filas impares */
 .table-striped tr:nth-child(odd) {
-        background-color: white; /* Filas impares con fondo blanco */
+    background-color: white;
+    cursor: pointer;    
+    
 }
 
+/* Filas pares */
 .table-striped tr:nth-child(even) {
-    background-color: #b3ecff; /* Filas pares con fondo celeste */
+    background-color: #b3ecff; 
+    cursor: pointer;
 }
 
 
