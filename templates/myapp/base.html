@@ -6,13 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElPoetaLibrary</title>
     <!-- Links Google Fonts -->
-    <!-- Dancing Script -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
-    <!-- Dancing Script -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <!-- CDN Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,59 +18,66 @@
 
 <body class="">
     
-    <header class="flex align-center  flex-col w-full h-[100%] ">
+    <header class="flex align-center flex-col w-full h-[100%]">
         <!-- Barra de Navegación -->
         <nav class="bg-black shadow-xl fixed w-full h-16 shadow shadow-[#445566] flex items-center px-2 justify-between z-10">
             <!-- Logo -->
             <a class="mx-2" href="{% url 'home' %}">
                 <div id="logo-section" class="p-2 transition flex justify-around hover:scale-[1.05] hover:border hover:border hover:border-white rounded">
-                    <svg class="w-8 text-white bg-white p-2 mx-1 rounded" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
-
+                    <svg class="w-8 text-white bg-white p-2 mx-1 rounded" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
+                    </svg>
                     <span class="text-3xl mx-1 text-white" style="font-family: 'Dancing Script', cursive;">ElPoeta</span>
                 </div>
             </a>
             
             <!-- sections -->
-            <div class="flex ">
-                <ul class="flex justify-between mx-4 flex align-center " >
-                    <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition  ">
+            <div class="flex">
+                <ul class="flex justify-between mx-4 flex align-center">
+                    <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition">
                         <a class="text-2xl" href="{% url 'catalog' %}">Catálogo</a>
                     </li>  
-                    <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition  ">
+                    <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition">
                         <a class="text-2xl" href="{% url 'publishers' %}">Editoriales</a>
                     </li>
-                    <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition  ">
+                    <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition">
                         <a class="text-2xl" href="{% url 'catalog' %}">bodegas</a>
                     </li>
                 </ul>
                 
-            <!-- user icon -->    
+                <!-- user icon -->    
                 <a href="{% url 'admin:index' %}">
-                    <svg class="w-6 text-white bg-white " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <svg class="w-6 text-white bg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
                     </svg>
                 </a>
-        
             </div>
-        
         </nav>
         
-    
         <!-- Hero con Imagen de Libros -->
         <div class="flex-container mx-auto justify-center shadow-xl shadow-black flex-col transition bg-cover bg-center min-h-[100vh] h-auto w-full flex align-center items-center justify-center" 
             style="background-image: url('{% static 'images/expocisionesHero.jpg' %}'); background-attachment: fixed;">
             {% block content %}{% endblock %}
             {% block catalog %}{% endblock %}
         </div>
-        
     </header>
     
-    <main>
-
-        <div class="w-full bg-black h-80 ">
-
+    <main >
+        {% block descripcion %}
+        <div id="descripcionBase" class="w-full h-[50vh] flex ">
+            <div class="w-full h-[100%]"
+                style="background-image: url('{% static 'images/heroLibros.jpg' %}'); background-size: cover; background-position: center;">
+                <h2 class="text-white text-center text-3xl my-4">En Librería El Poeta encontrarás lecturas para ti</h2>
+            </div>
+            <div class="w-full bg-black h-[100%]"></div>
         </div>
-        
+        <div class="w-full h-[50vh] flex">
+            <div class="w-full bg-black h-[100%]"></div>
+            <div class="w-full  h-[100%]" 
+            style="background-image: url('{% static 'images/publishersHero.jpg' %}'); background-size: cover; background-position: center;"
+            ></div>
+        </div>
+        {% endblock %}
     </main>
     
     <footer>

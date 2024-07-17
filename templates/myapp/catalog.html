@@ -1,5 +1,9 @@
 {% extends 'myapp/base.html' %}
 
+{% block descripcion %}
+
+{% endblock %}
+
 {% block catalog %}
     
 <div class="my-40 w-full" id="product">
@@ -18,6 +22,8 @@
                 {% endfor %}
                 <hr class="border border-gray mr-2 my-2">
                 <p class="text-gray-500 text-2xl">${{ producto.precio }}</p>
+                <hr class="border border-gray mr-2 my-2">
+                <p>Bodega: {{ producto.bodega }}</p>
             </div>
         </div>
 
