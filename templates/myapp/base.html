@@ -47,7 +47,7 @@
                 
                 <!-- user icon -->    
                 <a href="{% url 'admin:index' %}">
-                    <svg class="w-6 text-white bg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <svg class="w-6 text-white bg-white p-1 rounded hover:scale-150 transition" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
                     </svg>
                 </a>
@@ -57,6 +57,11 @@
         <!-- Hero con Imagen de Libros -->
         <div class="flex-container mx-auto justify-center shadow-xl shadow-black flex-col transition bg-cover bg-center min-h-[100vh] h-auto w-full flex align-center items-center justify-center" 
             style="background-image: url('{% static 'images/expocisionesHero.jpg' %}'); background-attachment: fixed;">
+            
+            <div class="absolute h-[100vh] w-[25vw] left-0 flex mx-16 flex-col justify-center items-center">
+                <h1 class="text-9xl text-white">Libreria</h1>
+                <h1 class="text-9xl text-white">El Poeta</h1>
+            </div>
             {% block content %}{% endblock %}
             {% block catalog %}{% endblock %}
         </div>
@@ -64,15 +69,29 @@
     
     <main >
         {% block descripcion %}
-        <div id="descripcionBase" class="w-full h-[50vh] flex ">
+        <div id="descripcionBase" class="w-full h-[50vh] flex z-20">
             <div class="w-full h-[100%]"
                 style="background-image: url('{% static 'images/heroLibros.jpg' %}'); background-size: cover; background-position: center;">
-                <h2 class="text-white text-center text-3xl my-4">En Librería El Poeta encontrarás lecturas para ti</h2>
             </div>
-            <div class="w-full bg-black h-[100%]"></div>
+            <div class="w-full bg-red-400 h-[100%]">
+                <h2 class="text-black text-center text-3xl my-4">En Librería El Poeta encontrarás lecturas para ti</h2>
+                <ul class="text-black mx-12 my-8 text-3xl cursor-pointer" style="list-style: circle">
+                    <li class="my-2">Novelas</li>
+                    <li class="my-2">Literatura infantil</li>
+                    <li class="my-2">Revistas</li>
+                    <li class="my-2">Enciclopedias</li>
+                </ul>
+            </div>
         </div>
         <div class="w-full h-[50vh] flex">
-            <div class="w-full bg-black h-[100%]"></div>
+            <div class="w-full bg-yellow-400 h-[100%]">
+                <h2 class="text-black text-center text-3xl my-4">Encuentra nuestros productos en</h2>
+                <ul class="text-black mx-12 my-8 text-3xl cursor-pointer" style="list-style: circle">
+                    <li class="my-2 ">Santiago</li>
+                    <li class="my-2">Talca</li>
+                    <li class="my-2">Concepción</li>
+                </ul>
+            </div>
             <div class="w-full  h-[100%]" 
             style="background-image: url('{% static 'images/publishersHero.jpg' %}'); background-size: cover; background-position: center;"
             ></div>
