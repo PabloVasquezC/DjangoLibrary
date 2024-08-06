@@ -10,7 +10,7 @@
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
 
-        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16">
+        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl">
             <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
             <hr class="border border-gray mr-2 my-2">
 
@@ -32,8 +32,8 @@
                     <p>{{ producto.bodega }}</p>
                     <hr class="border border-gray mr-2 my-2">
                     <div>
-                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Comprar</button>
-                        <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Arrendar</button>
+                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Añadir Compra</button>
+                        <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Añadir Arriendo</button>
                     </div>
                 </div>
             </div>
@@ -80,10 +80,10 @@ function openModal(action, productName) {
     
     if (action === 'comprar') {
         title.innerText = 'Confirmar Compra';
-        message.innerText = `¿Estás seguro de que deseas comprar el producto "${productName}"?`;
+        message.innerText = `¿Estás seguro de que deseas añadir el producto "${productName}" a tu carrito?`;
     } else if (action === 'arrendar') {
         title.innerText = 'Confirmar Arriendo';
-        message.innerText = `¿Estás seguro de que deseas arrendar el producto "${productName}"?`;
+        message.innerText = `¿Estás seguro de que deseas añadir el producto "${productName}" a tu carrito ?`;
     }
     
     modal.classList.remove('hidden');
