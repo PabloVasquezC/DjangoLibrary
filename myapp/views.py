@@ -37,3 +37,7 @@ def warehouses(request):
         'info_bodega': info_bodega,  
     })
 
+def login(request):
+    return render(request, 'myapp/login.html', {
+        'app_name': 'myapp',    
+    })
