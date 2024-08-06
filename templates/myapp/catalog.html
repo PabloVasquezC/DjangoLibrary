@@ -3,15 +3,14 @@
 {% block libreria_el_poeta %}{% endblock %}
 {% block descripcion %}{% endblock %}
 
-
-{% block catalog %} 
+{% block content %}
 <div class="my-40 w-full" id="product">
     <h1 class="text-white font-bold text-center text-8xl mt-40" style="font-family: 'Dancing Script'">Catálogo</h1>
     
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
 
-        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex rounded-xl border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 cursor-pointer">
+        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex rounded-xl border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16">
             <img src="{{ producto.fotoLink }}" class="card-img-top h-[90%] rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
             <div class="card-body">
                 <h2 class="text-2xl font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
@@ -31,8 +30,8 @@
                 <p>{{ producto.bodega }}</p>
                 <hr class="border border-gray mr-2 my-2">
                 <div>
-                    <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg">Comprar</button>
-                    <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg">Arrendar</button>
+                    <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Comprar</button>
+                    <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Arrendar</button>
                 </div>
             </div>
         </div>
@@ -40,4 +39,97 @@
         {% endfor %}
     </section>
 </div>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-1/3">
+        <h2 class="text-2xl font-bold mb-4" id="modal-title"></h2>
+        <p class="mb-6" id="modal-message"></p>
+        <div class="flex justify-end space-x-4">
+            <button class="bg-red-500 p-2 rounded shadow hover:bg-red-600" onclick="closeModal()">Cancelar</button>
+            <button class="bg-green-500 p-2 rounded shadow hover:bg-green-600" onclick="confirmAction()">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Mensaje de éxito -->
+<div id="success-message" class="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg hidden">
+    Acción realizada con éxito.
+</div>
+
+<!-- Carrito de compras -->
+<div class="p-4" id="cart">
+    <h1 class="text-2xl font-bold mb-4">Carrito de Compras</h1>
+    <div id="cart-items" class="bg-white p-4 rounded-lg shadow-lg">
+        <p class="text-gray-500">Tu carrito está vacío.</p>
+    </div>
+</div>
+
+<script>
+function openModal(action, productName) {
+    console.log("openModal called with action:", action, "and productName:", productName);
+    const modal = document.getElementById('modal');
+    const title = document.getElementById('modal-title');
+    const message = document.getElementById('modal-message');
+    
+    modal.dataset.action = action;
+    modal.dataset.productName = productName;
+    
+    if (action === 'comprar') {
+        title.innerText = 'Confirmar Compra';
+        message.innerText = `¿Estás seguro de que deseas comprar el producto "${productName}"?`;
+    } else if (action === 'arrendar') {
+        title.innerText = 'Confirmar Arriendo';
+        message.innerText = `¿Estás seguro de que deseas arrendar el producto "${productName}"?`;
+    }
+    
+    modal.classList.remove('hidden');
+}
+
+function closeModal() {
+    console.log("closeModal called");
+    const modal = document.getElementById('modal');
+    modal.classList.add('hidden');
+}
+
+function confirmAction() {
+    console.log("confirmAction called");
+    const modal = document.getElementById('modal');
+    const action = modal.dataset.action;
+    const productName = modal.dataset.productName;
+
+    console.log("Action:", action, "Product Name:", productName);
+
+    // Actualizar el carrito
+    const cart = document.getElementById('cart-items');
+    if (cart) {
+        console.log("Updating cart with action:", action, "and product:", productName);
+        const cartItem = document.createElement('div');
+        cartItem.className = 'p-2 border-b';
+        cartItem.innerText = `${action.charAt(0).toUpperCase() + action.slice(1)}: ${productName}`;
+        cart.appendChild(cartItem);
+
+        // Remove "Tu carrito está vacío." if it exists
+        const emptyMessage = cart.querySelector('.text-gray-500');
+        if (emptyMessage) {
+            emptyMessage.remove();
+        }
+    } else {
+        console.error("Cart element not found");
+    }
+    
+    // Mostrar mensaje de éxito
+    const successMessage = document.getElementById('success-message');
+    if (successMessage) {
+        successMessage.classList.remove('hidden');
+        setTimeout(() => {
+            successMessage.classList.add('hidden');
+        }, 3000);
+    } else {
+        console.error("Success message element not found");
+    }
+    
+    closeModal();
+}
+</script>
 {% endblock %}

@@ -3,6 +3,11 @@
 {% block libreria_el_poeta %}{% endblock %}
 {% block descripcion %}{% endblock %}
 
-{% block cart%}
-    <h1>hello cart</h1>
+{% block cart %}
+<div class="p-4">
+    <h1 class="text-2xl font-bold mb-4">Carrito de Compras</h1>
+    <div id="cart-items" class="bg-white p-4 rounded-lg shadow-lg">
+        <p class="text-gray-500">Tu carrito está vacío.</p>
+    </div>
+</div>
 {% endblock %}
