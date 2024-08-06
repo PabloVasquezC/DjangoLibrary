@@ -1,5 +1,8 @@
 {% extends 'myapp/base.html' %}
 
+{% block libreria_el_poeta %}
+{% endblock %}
+
 {% block descripcion %}
 
 {% endblock %}
@@ -12,18 +15,22 @@
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
 
-        <div id="card" class="card mx-10 bg-white w-[400px] h-[280px] flex rounded-xl border border-black shadow-lg hover:scale-[1.1] shadow-gray-400 mx-26 my-16">
+        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex rounded-xl border border-black shadow-lg hover:scale-[1.1] shadow-gray-400 mx-26 my-16">
             <img src="{{ producto.fotoLink }}" class="card-img-top h-[90%] rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
             <div class="card-body">
                 <h2 class="text-2xl font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
                 <hr class="border border-gray mr-2 my-2">
                 {% for autor in producto.autores.all %}
-                    <h3 class="bold">{{ autor.nombre }}</h3> <!-- Asegúrate de que 'nombre' es un atributo del modelo Autor -->
+                    <h3 class="bold">{{ autor.nombre }}</h3> 
                 {% endfor %}
+                <hr class="border border-gray mr-2 my-2">
+                <p>Editorial : {{ producto.editorial }}</p>
                 <hr class="border border-gray mr-2 my-2">
                 <p class="text-gray-500 text-2xl">${{ producto.precio }}</p>
                 <hr class="border border-gray mr-2 my-2">
                 <p>Bodega: {{ producto.bodega }}</p>
+                
+
             </div>
         </div>
 

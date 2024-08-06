@@ -7,7 +7,6 @@ from django.http import HttpResponse
 
 
 def home(request):
-    # Añade una ruta de imagen específica para la vista de home
     hero_image = 'images/heroHome.jpg'
     return render(request, 'myapp/base.html', {
         'app_name': 'myapp',
@@ -15,16 +14,19 @@ def home(request):
     })
 
 def publishers(request):
-    editoriales = Editorial.objects.all()  # Su consulta original
-    # Realiza una consulta separada para obtener la cantidad de productos por editorial
+    editoriales = Editorial.objects.all()  
     info_editoriales = Editorial.objects.annotate(cantidad_productos=Count('producto'))
     hero_image = 'images/heroPublisher.jpg'
     return render(request, 'myapp/publishers.html', {
         'editoriales': editoriales,
-        'info_editoriales': info_editoriales,  # Agregue el nuevo contexto aquí
+        'info_editoriales': info_editoriales,  
         'hero_image': hero_image
     })
 
 def catalog(request):
     productos = Producto.objects.all()
-    return render(request, 'myapp/catalog.html',{'productos': productos})
+    return render(request, 'myapp/catalog.html',{
+        'productos': productos,
+
+    
+    })

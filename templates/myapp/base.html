@@ -58,10 +58,12 @@
         <div class="flex-container mx-auto justify-center shadow-xl shadow-black flex-col transition bg-cover bg-center min-h-[100vh] h-auto w-full flex align-center items-center justify-center" 
             style="background-image: url('{% static 'images/expocisionesHero.jpg' %}'); background-attachment: fixed;">
             
-            <div class="absolute h-[100vh] w-[25vw] left-0 flex mx-16 flex-col justify-center items-center">
+            {% block libreria_el_poeta %}
+            <div id="LibreriaElPoeta" class="absolute h-[100vh] w-[25vw] left-0 flex mx-16 flex-col justify-center items-center">
                 <h1 class="text-9xl text-white">Libreria</h1>
                 <h1 class="text-9xl text-white">El Poeta</h1>
             </div>
+            {% endblock %}
             {% block content %}{% endblock %}
             {% block catalog %}{% endblock %}
         </div>

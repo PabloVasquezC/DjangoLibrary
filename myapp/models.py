@@ -38,12 +38,10 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     fotoLink = models.TextField(max_length=1000000)
     bodega = models.ForeignKey(Bodega, on_delete=models.PROTECT)
-    # cantidad_en_stock = models.PositiveIntegerField() # 
+    cantidad_en_stock = models.IntegerField()
 
     def __str__(self):
         return f"{self.get_tipo_display()} - {self.editorial.nombre}"
-
-
 
 class MovimientoProducto(models.Model):
     bodega_origen = models.ForeignKey(Bodega, related_name='movimientos_origen', on_delete=models.CASCADE)
