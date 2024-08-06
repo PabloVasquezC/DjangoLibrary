@@ -135,3 +135,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', 
     'guardian.backends.ObjectPermissionBackend',
 )
+
+# logout redirect
+LOGOUT_REDIRECT_URL = '/'
+
+# login redirect
+LOGIN_REDIRECT_URL = '/'
