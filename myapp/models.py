@@ -12,6 +12,13 @@ class Autor(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Bodega(models.Model):
+    nombre = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.nombre
 
 class Producto(models.Model):
     LIBRO = 'LB'
@@ -30,17 +37,13 @@ class Producto(models.Model):
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     fotoLink = models.TextField(max_length=1000000)
-    # cantidad_en_stock = models.PositiveIntegerField() # Opcional
+    bodega = models.ForeignKey(Bodega, on_delete=models.PROTECT)
+    # cantidad_en_stock = models.PositiveIntegerField() # 
 
     def __str__(self):
         return f"{self.get_tipo_display()} - {self.editorial.nombre}"
 
-class Bodega(models.Model):
-    nombre = models.CharField(max_length=100)
-    direccion = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.nombre
 
 class MovimientoProducto(models.Model):
     bodega_origen = models.ForeignKey(Bodega, related_name='movimientos_origen', on_delete=models.CASCADE)
