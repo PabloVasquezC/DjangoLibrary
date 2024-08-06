@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+
+{% block libreria_el_poeta %}{% endblock %}
+{% block descripcion %}{% endblock %}
+
+{% block crearCuenta %}
+<h2 class="text-3xl text-white m-4">Crear Cuenta</h2>
+<form method="post" class="bg-white rounded text-black p-4 flex-col">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="bg-blue-500 m-4 p-2 rounded shadow shadow-black" type="submit">Registrar</button>
+</form>
+{% endblock %}
