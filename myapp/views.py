@@ -37,7 +37,3 @@ def warehouses(request):
         'info_bodega': info_bodega,  
     })
 
-def cart(request):
-    return render(request, 'myapp/cart.html', {
-        'app_name': 'myapp',
-    })

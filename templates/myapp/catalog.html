@@ -10,28 +10,31 @@
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
 
-        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex rounded-xl border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16">
-            <img src="{{ producto.fotoLink }}" class="card-img-top h-[90%] rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
-            <div class="card-body">
-                <h2 class="text-2xl font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
-                <hr class="border border-gray mr-2 my-2">
-                <h3 class="font-bold">Autor(es): </h3>
-                {% for autor in producto.autores.all %}
-                    <p class="bold"> {{ autor.nombre }}</p> 
-                {% endfor %}
-                <hr class="border border-gray mr-2 my-2">
-                <p>Editorial : {{ producto.editorial }}</p>
-                <hr class="border border-gray mr-2 my-2">
-                <p class="font-bold">Precio: </p>
-                <p>Venta ${{ producto.precio_venta }}</p>
-                <p>Arriendo ${{ producto.precio_arriendo }}</p>
-                <hr class="border border-gray mr-2 my-2">
-                <p class="font-bold">Bodega: </p>
-                <p>{{ producto.bodega }}</p>
-                <hr class="border border-gray mr-2 my-2">
-                <div>
-                    <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Comprar</button>
-                    <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Arrendar</button>
+        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16">
+            <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
+            <hr class="border border-gray mr-2 my-2">
+
+            <div class="flex">
+                <img src="{{ producto.fotoLink }}" class="card-img-top h-60 rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
+                <div class="card-body">
+                    <h3 class="font-bold">Autor(es): </h3>
+                    {% for autor in producto.autores.all %}
+                        <p class="bold"> {{ autor.nombre }}</p> 
+                    {% endfor %}
+                    <hr class="border border-gray mr-2 my-2">
+                    <p>Editorial : {{ producto.editorial }}</p>
+                    <hr class="border border-gray mr-2 my-2">
+                    <p class="font-bold">Precio: </p>
+                    <p>Venta ${{ producto.precio_venta }}</p>
+                    <p>Arriendo ${{ producto.precio_arriendo }}</p>
+                    <hr class="border border-gray mr-2 my-2">
+                    <p class="font-bold">Bodega: </p>
+                    <p>{{ producto.bodega }}</p>
+                    <hr class="border border-gray mr-2 my-2">
+                    <div>
+                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Comprar</button>
+                        <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Arrendar</button>
+                    </div>
                 </div>
             </div>
         </div>
