@@ -9,8 +9,7 @@
     
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
-
-        <div id="card" class="card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2">
+        <div id="card" class="cursor-pointer card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2" onclick="showProductDetails('{{ producto.nombre }}', '{{ producto.fotoLink }}', '{{ producto.descripcion }}', '{{ producto.precio_venta }}', '{{ producto.precio_arriendo }}', '{{ producto.editorial }}', '{{ producto.bodega }}', '{{ producto.cantidad_en_stock }}')">
             <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
             <hr class="border border-gray mr-2 my-2">
 
@@ -37,13 +36,12 @@
                     <p>{{producto.cantidad_en_stock}}</p>
                     <hr class="border border-gray mr-2 my-2">
                     <div class="flex flex-col my-8">
-                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Añadir Compra</button>
-                        <button class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Añadir Arriendo</button>
+                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('comprar', '{{ producto.nombre }}', {{ producto.precio_venta }})">Añadir Compra</button>
+                        <button class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('arrendar', '{{ producto.nombre }}', {{ producto.precio_arriendo }})">Añadir Arriendo</button>
                     </div>
                 </div>
             </div>
         </div>
-
         {% endfor %}
     </section>
 </div>
@@ -60,6 +58,23 @@
     </div>
 </div>
 
+<!-- Modal de descripción del producto -->
+<div id="product-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl h-auto max-h-full overflow-auto">
+        <h2 class="text-2xl font-bold mb-4" id="product-modal-title"></h2>
+        <img id="product-modal-image" src="" alt="Imagen del producto" class="w-64 h-64 mb-4 mx-auto">
+        <p id="product-modal-description" class="mb-4"></p>
+        <p><strong>Precio Venta:</strong> $<span id="product-modal-price-venta"></span></p>
+        <p><strong>Precio Arriendo:</strong> $<span id="product-modal-price-arriendo"></span></p>
+        <p><strong>Editorial:</strong> <span id="product-modal-editorial"></span></p>
+        <p><strong>Bodega:</strong> <span id="product-modal-bodega"></span></p>
+        <p><strong>Stock:</strong> <span id="product-modal-stock"></span></p>
+        <div class="flex justify-end space-x-4 mt-4">
+            <button class="bg-red-500 p-2 rounded shadow hover:bg-red-600" onclick="closeProductModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
 <!-- Mensaje de éxito -->
 <div id="success-message" class="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg hidden">
     Acción realizada con éxito.
@@ -71,17 +86,24 @@
     <div id="cart-items" class="bg-white p-4 rounded-lg shadow-lg">
         <p class="text-gray-500">Tu carrito está vacío.</p>
     </div>
+    <div id="cart-total" class="bg-white p-4 rounded-lg shadow-lg mt-4">
+        <p class="font-bold">Total: $<span id="total-amount">0</span></p>
+    </div>
 </div>
 
 <script>
-function openModal(action, productName) {
-    console.log("openModal called with action:", action, "and productName:", productName);
+let cart = [];
+let totalAmount = 0;
+
+function openModal(action, productName, price) {
+    console.log("openModal called with action:", action, "and productName:", productName, "and price:", price);
     const modal = document.getElementById('modal');
     const title = document.getElementById('modal-title');
     const message = document.getElementById('modal-message');
     
     modal.dataset.action = action;
     modal.dataset.productName = productName;
+    modal.dataset.price = price;
     
     if (action === 'comprar') {
         title.innerText = 'Confirmar Compra';
@@ -105,16 +127,17 @@ function confirmAction() {
     const modal = document.getElementById('modal');
     const action = modal.dataset.action;
     const productName = modal.dataset.productName;
+    const price = parseFloat(modal.dataset.price);
 
-    console.log("Action:", action, "Product Name:", productName);
+    console.log("Action:", action, "Product Name:", productName, "Price:", price);
 
     // Actualizar el carrito
     const cart = document.getElementById('cart-items');
     if (cart) {
-        console.log("Updating cart with action:", action, "and product:", productName);
+        console.log("Updating cart with action:", action, "and product:", productName, "price:", price);
         const cartItem = document.createElement('div');
         cartItem.className = 'p-2 border-b';
-        cartItem.innerText = `${action.charAt(0).toUpperCase() + action.slice(1)}: ${productName}`;
+        cartItem.innerText = `${action.charAt(0).toUpperCase() + action.slice(1)}: ${productName} - $${price}`;
         cart.appendChild(cartItem);
 
         // Remove "Tu carrito está vacío." if it exists
@@ -122,6 +145,10 @@ function confirmAction() {
         if (emptyMessage) {
             emptyMessage.remove();
         }
+
+        // Actualizar el total
+        totalAmount += price;
+        document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
     } else {
         console.error("Cart element not found");
     }
@@ -138,6 +165,25 @@ function confirmAction() {
     }
     
     closeModal();
+}
+
+function showProductDetails(name, image, description, priceVenta, priceArriendo, editorial, bodega, stock) {
+    const productModal = document.getElementById('product-modal');
+    document.getElementById('product-modal-title').innerText = name;
+    document.getElementById('product-modal-image').src = image;
+    document.getElementById('product-modal-description').innerText = description;
+    document.getElementById('product-modal-price-venta').innerText = priceVenta;
+    document.getElementById('product-modal-price-arriendo').innerText = priceArriendo;
+    document.getElementById('product-modal-editorial').innerText = editorial;
+    document.getElementById('product-modal-bodega').innerText = bodega;
+    document.getElementById('product-modal-stock').innerText = stock;
+    
+    productModal.classList.remove('hidden');
+}
+
+function closeProductModal() {
+    const productModal = document.getElementById('product-modal');
+    productModal.classList.add('hidden');
 }
 </script>
 {% endblock %}
