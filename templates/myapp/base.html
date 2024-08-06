@@ -41,7 +41,7 @@
                         <a class="text-2xl" href="{% url 'publishers' %}">Editoriales</a>
                     </li>
                     <li style="font-family: 'Roboto Slab', serif;" class="text-white hover:bg-gray-300 rounded hover:text-black px-2 transition">
-                        <a class="text-2xl" href="{% url 'catalog' %}">bodegas</a>
+                        <a class="text-2xl" href="{% url 'warehouses' %}">bodegas</a>
                     </li>
                 </ul>
                 
@@ -66,6 +66,8 @@
             {% endblock %}
             {% block content %}{% endblock %}
             {% block catalog %}{% endblock %}
+            {% block warehouses %}{% endblock %}
+
         </div>
     </header>
     
@@ -78,8 +80,7 @@
             <div class="w-full bg-red-400 h-[100%]">
                 <h2 class="text-black text-center text-3xl my-4">En Librería El Poeta encontrarás lecturas para ti</h2>
                 <ul class="text-black mx-12 my-8 text-3xl cursor-pointer" style="list-style: circle">
-                    <li class="my-2">Novelas</li>
-                    <li class="my-2">Literatura infantil</li>
+                    <li class="my-2">Libros</li>
                     <li class="my-2">Revistas</li>
                     <li class="my-2">Enciclopedias</li>
                 </ul>

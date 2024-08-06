@@ -1,6 +1,6 @@
 from django.db.models import Count
 from django.shortcuts import render
-from myapp.models import Editorial, Producto
+from myapp.models import Editorial, Producto, Bodega
 from django.http import HttpResponse
 
 
@@ -16,11 +16,9 @@ def home(request):
 def publishers(request):
     editoriales = Editorial.objects.all()  
     info_editoriales = Editorial.objects.annotate(cantidad_productos=Count('producto'))
-    hero_image = 'images/heroPublisher.jpg'
     return render(request, 'myapp/publishers.html', {
         'editoriales': editoriales,
         'info_editoriales': info_editoriales,  
-        'hero_image': hero_image
     })
 
 def catalog(request):
@@ -29,4 +27,12 @@ def catalog(request):
         'productos': productos,
 
     
+    })
+
+def warehouses(request):
+    bodegas = Bodega.objects.all()  
+    info_bodega = Bodega.objects.annotate(cantidad_productos=Count('nombre'))
+    return render(request, 'myapp/warehouses.html', {
+        'bodega': bodegas,
+        'info_bodega': info_bodega,  
     })
