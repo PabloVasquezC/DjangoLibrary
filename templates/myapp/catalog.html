@@ -11,13 +11,14 @@
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
 
-        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex rounded-xl border border-black shadow-lg hover:scale-[1.1] shadow-gray-400 mx-26 my-16">
+        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex rounded-xl border border-black shadow-lg hover:shadow-xl shadow-black mx-26 my-16 cursor-pointer">
             <img src="{{ producto.fotoLink }}" class="card-img-top h-[90%] rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
             <div class="card-body">
                 <h2 class="text-2xl font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
                 <hr class="border border-gray mr-2 my-2">
+                <h3 class="font-bold">Autor(es): </h3>
                 {% for autor in producto.autores.all %}
-                    <h3 class="bold">Autor(es): {{ autor.nombre }}</h3> 
+                    <p class="bold"> {{ autor.nombre }}</p> 
                 {% endfor %}
                 <hr class="border border-gray mr-2 my-2">
                 <p>Editorial : {{ producto.editorial }}</p>
@@ -26,7 +27,13 @@
                 <p>Venta ${{ producto.precio_venta }}</p>
                 <p>Arriendo ${{ producto.precio_arriendo }}</p>
                 <hr class="border border-gray mr-2 my-2">
-                <p>Bodega: {{ producto.bodega }}</p>
+                <p class="font-bold">Bodega: </p>
+                <p>{{ producto.bodega }}</p>
+                <hr class="border border-gray mr-2 my-2">
+                <div>
+                    <button class="bg-green-500 p-1 rounded shadow shadow-black">Comprar</button>
+                    <button class="bg-blue-500 p-1 rounded shadow shadow-black">Arrendar</button>
+                </div>
                 
 
             </div>
