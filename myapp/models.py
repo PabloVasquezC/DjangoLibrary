@@ -35,13 +35,14 @@ class Producto(models.Model):
     editorial = models.ForeignKey(Editorial, on_delete=models.PROTECT)
     autores = models.ManyToManyField(Autor)
     descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_venta = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_arriendo = models.DecimalField(max_digits=10, decimal_places=2)
     fotoLink = models.TextField(max_length=1000000)
     bodega = models.ForeignKey(Bodega, on_delete=models.PROTECT)
     cantidad_en_stock = models.IntegerField()
 
     def __str__(self):
-        return f"{self.get_tipo_display()} - {self.editorial.nombre}"
+        return self.nombre
 
 class MovimientoProducto(models.Model):
     bodega_origen = models.ForeignKey(Bodega, related_name='movimientos_origen', on_delete=models.CASCADE)
