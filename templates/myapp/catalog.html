@@ -10,20 +10,22 @@
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
 
-        <div id="card" class="card mx-10 bg-white w-[450px] h-[380px] flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl">
+        <div id="card" class="card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2">
             <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
             <hr class="border border-gray mr-2 my-2">
 
             <div class="flex">
-                <img src="{{ producto.fotoLink }}" class="card-img-top h-60 rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
-                <div class="card-body">
-                    <h3 class="font-bold">Autor(es): </h3>
+                <div class="flex flex-col">
+                    <img src="{{ producto.fotoLink }}" class="card-img-top h-60 rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
+                    <h3 class="font-bold mx-2">Autor(es): </h3>
                     {% for autor in producto.autores.all %}
-                        <p class="bold"> {{ autor.nombre }}</p> 
+                        <p class="bold mx-2"> {{ autor.nombre }}</p> 
                     {% endfor %}
                     <hr class="border border-gray mr-2 my-2">
-                    <p>Editorial : {{ producto.editorial }}</p>
-                    <hr class="border border-gray mr-2 my-2">
+                    <p class="font-bold mx-2">Editorial:</p>
+                    <p class="mx-2">{{ producto.editorial }}</p>
+                </div>
+                <div class="card-body">
                     <p class="font-bold">Precio: </p>
                     <p>Venta ${{ producto.precio_venta }}</p>
                     <p>Arriendo ${{ producto.precio_arriendo }}</p>
@@ -31,9 +33,12 @@
                     <p class="font-bold">Bodega: </p>
                     <p>{{ producto.bodega }}</p>
                     <hr class="border border-gray mr-2 my-2">
-                    <div>
+                    <p class="font-bold">Stock: </p>
+                    <p>{{producto.cantidad_en_stock}}</p>
+                    <hr class="border border-gray mr-2 my-2">
+                    <div class="flex flex-col my-8">
                         <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="openModal('comprar', '{{ producto.nombre }}')">Añadir Compra</button>
-                        <button class="bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Añadir Arriendo</button>
+                        <button class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="openModal('arrendar', '{{ producto.nombre }}')">Añadir Arriendo</button>
                     </div>
                 </div>
             </div>
