@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 
 class Editorial(models.Model):
     nombre = models.CharField(max_length=100)
@@ -39,10 +41,17 @@ class Producto(models.Model):
     precio_arriendo = models.DecimalField(max_digits=10, decimal_places=2)
     fotoLink = models.TextField(max_length=1000000)
     bodega = models.ForeignKey(Bodega, on_delete=models.PROTECT)
-    cantidad_en_stock = models.IntegerField(default=0)
+    cantidad_en_stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.nombre
+
+    def clean(self):
+        if self.precio_venta <= 0:
+            raise ValidationError({'precio_venta': 'El precio de venta debe ser un valor positivo.'})
+        if self.precio_arriendo <= 0:
+            raise ValidationError({'precio_arriendo': 'El precio de arriendo debe ser un valor positivo.'})
+
 
 class MovimientoProducto(models.Model):
     bodega_origen = models.ForeignKey(Bodega, related_name='movimientos_origen', on_delete=models.CASCADE)
