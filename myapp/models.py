@@ -94,3 +94,41 @@ class DetalleTransaccion(models.Model):
 
     def __str__(self):
         return f"{self.transaccion} - {self.producto.nombre} - {self.cantidad}"
+
+from django.test import TestCase
+from django.contrib.auth.models import User
+from .models import Producto, Editorial, Bodega, Transaccion, DetalleTransaccion
+
+class TransaccionIntegrationTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.editorial = Editorial.objects.create(nombre='Editorial Test')
+        self.bodega = Bodega.objects.create(nombre='Bodega Test', direccion='Dirección Test')
+        self.producto = Producto.objects.create(
+            nombre='Producto Test',
+            tipo='LB',
+            editorial=self.editorial,
+            descripcion='Descripción Test',
+            precio_venta=100,
+            precio_arriendo=50,
+            fotoLink='http://test.com/image.jpg',
+            bodega=self.bodega,
+            cantidad_en_stock=10
+        )
+        self.transaccion = Transaccion.objects.create(
+            usuario=self.user,
+            tipo='C',
+            total=100
+        )
+        self.detalle_transaccion = DetalleTransaccion.objects.create(
+            transaccion=self.transaccion,
+            producto=self.producto,
+            cantidad=1,
+            precio=100
+        )
+
+    def test_creacion_transaccion(self):
+        self.assertEqual(Transaccion.objects.count(), 1)
+        self.assertEqual(DetalleTransaccion.objects.count(), 1)
+        self.assertEqual(self.producto.cantidad_en_stock, 9)
+
