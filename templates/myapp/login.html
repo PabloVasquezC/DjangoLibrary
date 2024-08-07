@@ -9,6 +9,14 @@
 {% endblock %}
 
 {% block login %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="bg-green-500 text-white p-2 rounded {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 {% if user.is_authenticated %}
     <h1 class="bg-black text-white shadow shadow-white p-2 text-3xl rounded-lg">Ya has iniciado sesión 😉.</h1>
  
@@ -18,9 +26,15 @@
         <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black hover:border-black">Ir al panel de administración</a>
     </div>
 {% else %}
-    <div class="flex">
+    <div class="flex flex-col items-center">
         <a href="{% url 'register' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Crear Cuenta</a>
-        <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black ">Iniciar sesión</a>
+        
+        <!-- Formulario de inicio de sesión -->
+        <form method="post" action="{% url 'login' %}" class="w-full max-w-xs">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Iniciar sesión</button>
+        </form>
     </div>
 {% endif %}
 {% endblock %}
