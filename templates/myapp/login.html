@@ -1,21 +1,26 @@
 {% extends 'myapp/base.html' %}
 
-{% block libreria_el_poeta %}{% endblock %}
-{% block descripcion %}{% endblock %}
+{% block libreria_el_poeta %}
+<!-- Contenido opcional aquí -->
+{% endblock %}
+
+{% block descripcion %}
+<!-- Contenido opcional aquí -->
+{% endblock %}
 
 {% block login %}
 {% if user.is_authenticated %}
-    <h1 class="bg-green-500 p-2 text-3xl rounded">Ya has iniciado sesión 😉.</h1>
+    <h1 class="bg-black text-white shadow shadow-white p-2 text-3xl rounded-lg">Ya has iniciado sesión 😉.</h1>
  
-    <!-- Cerrar sesion -->
+    <!-- Cerrar sesión -->
     <div class="bg-white rounded p-4 m-4 flex">
-        <p>Si deseas cerrar sesión entra al panel de administración y cierra sesión desde allí</p>
-        <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Ir al panel de administración</a>
+        <p class="text-2xl">Si deseas cerrar sesión o administrar productos, entra al panel de administración.</p>
+        <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black hover:border-black">Ir al panel de administración</a>
     </div>
 {% else %}
     <div class="flex">
-        <a class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Crear Cuenta</a>
-        <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Iniciar sesión</a>
+        <a href="{% url 'register' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Crear Cuenta</a>
+        <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black ">Iniciar sesión</a>
     </div>
 {% endif %}
 {% endblock %}

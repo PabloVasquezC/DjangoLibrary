@@ -4,6 +4,10 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from .models import Editorial, Producto, Bodega
 import json
+from .forms import CustomUserCreationForm  
+from django.shortcuts import render, redirect
+
+
 
 def home(request):
     hero_image = 'images/heroHome.jpg'
@@ -38,6 +42,19 @@ def login(request):
     return render(request, 'myapp/login.html', {
         'app_name': 'myapp',    
     })
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Opcional: iniciar sesión del usuario después del registro
+            return redirect('login')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'myapp/register.html', {'form': form})
+
+
 
 @csrf_protect
 def actualizar_stock(request):

@@ -1,5 +1,8 @@
 from django import forms
 from .models import MovimientoProducto, DetalleMovimiento, Producto
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 
 class DetalleMovimientoForm(forms.ModelForm):
     class Meta:
@@ -20,3 +23,8 @@ class MovimientoProductoForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
