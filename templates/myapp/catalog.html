@@ -19,7 +19,7 @@
     
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
-        <div id="card" class="cursor-pointer card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2" onclick="showProductDetails('{{ producto.nombre }}', '{{ producto.fotoLink }}', '{{ producto.descripcion }}', '{{ producto.precio_venta }}', '{{ producto.precio_arriendo }}', '{{ producto.editorial }}', '{{ producto.bodega }}', '{{ producto.cantidad_en_stock }}')">
+        <div id="card-{{ producto.id }}" class="cursor-pointer card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2" onclick="showProductDetails('{{ producto.nombre }}', '{{ producto.fotoLink }}', '{{ producto.descripcion }}', '{{ producto.precio_venta }}', '{{ producto.precio_arriendo }}', '{{ producto.editorial }}', '{{ producto.bodega }}', '{{ producto.cantidad_en_stock }}')">
             <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
             <hr class="border border-gray mr-2 my-2">
 
@@ -46,15 +46,25 @@
                     <p id="stock-{{ producto.id }}">{{ producto.cantidad_en_stock }}</p> <!-- Aquí se asegura el identificador único -->
                     <hr class="border border-gray mr-2 my-2">
                     <div class="flex flex-col my-8">
-                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('comprar', '{{ producto.nombre }}', {{ producto.precio_venta }}, {{ producto.id }})">Añadir Compra</button>
-                        <button class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('arrendar', '{{ producto.nombre }}', {{ producto.precio_arriendo }}, {{ producto.id }})">Añadir Arriendo</button>
+                        <button id="buy-btn-{{ producto.id }}" class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('comprar', '{{ producto.nombre }}', '{{ producto.precio_venta }}', {{ producto.id }}, {{ producto.cantidad_en_stock }})">Añadir Compra</button>
+                        <button id="rent-btn-{{ producto.id }}" class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('arrendar', '{{ producto.nombre }}', '{{ producto.precio_arriendo }}', {{ producto.id }}, {{ producto.cantidad_en_stock }})">Añadir Arriendo</button>
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
-
     </section>
+
+    <!-- Carrito de compras -->
+    <div class="fixed bottom-0 right-0 m-8 p-4 bg-white shadow-lg rounded-lg" id="cart">
+        <h2 class="text-2xl font-bold mb-4">Carrito</h2>
+        <ul id="cart-items" class="mb-4"></ul>
+        <div class="flex justify-between">
+            <span id="total-price" class="font-bold">Total: $0</span>
+            <button class="bg-red-500 p-2 rounded shadow hover:bg-red-600" onclick="clearCart()">Vaciar Carrito</button>
+            <button class="bg-yellow-500 p-2 rounded shadow hover:bg-yellow-600" onclick="confirmPay()">Pagar</button>
+        </div>
+    </div>
 </div>
 
 <!-- Modal para confirmación de acciones -->
@@ -65,6 +75,18 @@
         <div class="flex justify-end space-x-4">
             <button class="bg-red-500 p-2 rounded shadow hover:bg-red-600" onclick="closeModal()">Cancelar</button>
             <button class="bg-green-500 p-2 rounded shadow hover:bg-green-600" onclick="confirmAction()">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de pago -->
+<div id="payment-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-1/3">
+        <h2 class="text-2xl font-bold mb-4">Confirmar Pago</h2>
+        <p class="mb-6">Total a pagar: $<span id="payment-total"></span></p>
+        <div class="flex justify-end space-x-4">
+            <button class="bg-red-500 p-2 rounded shadow hover:bg-red-600" onclick="closePaymentModal()">Cancelar</button>
+            <button class="bg-green-500 p-2 rounded shadow hover:bg-green-600" onclick="payItems()">Confirmar</button>
         </div>
     </div>
 </div>
@@ -86,15 +108,19 @@
     </div>
 </div>
 <script>
-    // JavaScript para manejar la autenticación antes de abrir el modal de compra o arriendo
-    function openModal(action, productName, price, productId) {
-        // Verificar si el usuario está autenticado
+    let cartTotal = 0;
+
+    function openModal(action, productName, price, productId, stock) {
         if (!document.getElementById('is-authenticated')) {
             alert('Debes iniciar sesión para realizar esta acción, dirigete al ícono de usuario.');
             return;
         }
 
-        // Código para manejar la apertura del modal
+        if (stock <= 0) {
+            alert('Este producto está agotado.');
+            return;
+        }
+
         const modal = document.getElementById('modal');
         const title = document.getElementById('modal-title');
         const message = document.getElementById('modal-message');
@@ -118,6 +144,175 @@
     function closeModal() {
         const modal = document.getElementById('modal');
         modal.classList.add('hidden');
+    }
+
+    function addToCart(productName, price, productId) {
+        const cartItems = document.getElementById('cart-items');
+        const newItem = document.createElement('li');
+        newItem.id = `cart-item-${productId}`;
+        newItem.className = 'flex justify-between mb-2';
+        newItem.innerHTML = `
+            ${productName} - $${price}
+            <button class="text-red-500" onclick="removeFromCart(${productId}, ${price})">Remover</button>
+        `;
+        cartItems.appendChild(newItem);
+
+        cartTotal += parseFloat(price);
+        updateTotalPrice();
+
+        decrementStock(productId);
+    }
+
+    function removeFromCart(productId, price) {
+        const item = document.getElementById(`cart-item-${productId}`);
+        if (item) {
+            item.remove();
+            cartTotal -= parseFloat(price);
+            updateTotalPrice();
+            incrementStock(productId);
+        }
+    }
+
+    function clearCart() {
+        const cartItems = document.getElementById('cart-items');
+        while (cartItems.firstChild) {
+            const itemId = cartItems.firstChild.id.split('-')[2];
+            const price = cartItems.firstChild.innerText.split('- $')[1];
+            incrementStock(itemId);
+            cartItems.removeChild(cartItems.firstChild);
+        }
+        cartTotal = 0;
+        updateTotalPrice();
+    }
+
+    function updateTotalPrice() {
+        const totalPriceElement = document.getElementById('total-price');
+        totalPriceElement.innerText = `Total: $${cartTotal.toFixed(2)}`;
+    }
+
+    function confirmPay() {
+        const paymentModal = document.getElementById('payment-modal');
+        document.getElementById('payment-total').innerText = cartTotal.toFixed(2);
+        paymentModal.classList.remove('hidden');
+    }
+
+    function closePaymentModal() {
+        const paymentModal = document.getElementById('payment-modal');
+        paymentModal.classList.add('hidden');
+    }
+
+    function payItems() {
+    const cartItems = document.querySelectorAll('#cart-items li');
+    let carrito = [];
+    cartItems.forEach(item => {
+        const productId = item.id.split('-')[2];
+        const productName = item.innerText.split(' - ')[0];
+        const price = item.innerText.split('$')[1];
+        carrito.push({
+            id: productId,
+            nombre: productName,
+            precio: parseFloat(price),
+            cantidad: 1 // Puedes ajustar esto si quieres manejar múltiples cantidades del mismo producto
+        });
+    });
+
+    fetch("{% url 'confirmar_pago' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            carrito: carrito,
+            tipo: 'C', // O 'A' dependiendo si es compra o arriendo
+            total: cartTotal
+        })
+    }).then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Pago realizado exitosamente.');
+            clearCart();
+            closePaymentModal();
+
+            // Actualizar el stock en la interfaz
+            const stockActualizado = data.stock_actualizado;
+            for (const productId in stockActualizado) {
+                const stockElement = document.getElementById(`stock-${productId}`);
+                stockElement.innerText = stockActualizado[productId];
+
+                if (stockActualizado[productId] <= 0) {
+                    document.getElementById(`buy-btn-${productId}`).disabled = true;
+                    document.getElementById(`rent-btn-${productId}`).disabled = true;
+                    stockElement.innerText = 'Sin stock';
+                } else {
+                    document.getElementById(`buy-btn-${productId}`).disabled = false;
+                    document.getElementById(`rent-btn-${productId}`).disabled = false;
+                }
+            }
+        } else {
+            alert('Hubo un error al procesar el pago: ' + data.message);
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un error al procesar el pago.');
+    });
+}
+
+
+function decrementStock(productId) {
+    const stockElement = document.getElementById(`stock-${productId}`);
+    let currentStock = parseInt(stockElement.innerText);
+    currentStock -= 1;
+    stockElement.innerText = currentStock;
+    
+    if (currentStock <= 0) {
+        document.getElementById(`buy-btn-${productId}`).disabled = true;
+        document.getElementById(`rent-btn-${productId}`).disabled = true;
+        stockElement.innerText = 'Sin stock';
+    }
+}
+
+function incrementStock(productId) {
+    const stockElement = document.getElementById(`stock-${productId}`);
+    let currentStock = parseInt(stockElement.innerText);
+    if (!isNaN(currentStock)) {
+        currentStock += 1;
+        stockElement.innerText = currentStock;
+        document.getElementById(`buy-btn-${productId}`).disabled = false;
+        document.getElementById(`rent-btn-${productId}`).disabled = false;
+    }
+}
+
+    function closeProductModal() {
+        const productModal = document.getElementById('product-modal');
+        productModal.classList.add('hidden');
+    }
+
+    function showProductDetails(name, image, description, precioVenta, precioArriendo, editorial, bodega, stock) {
+        const productModal = document.getElementById('product-modal');
+        document.getElementById('product-modal-title').innerText = name;
+        document.getElementById('product-modal-image').src = image;
+        document.getElementById('product-modal-description').innerText = description;
+        document.getElementById('product-modal-price-venta').innerText = precioVenta;
+        document.getElementById('product-modal-price-arriendo').innerText = precioArriendo;
+        document.getElementById('product-modal-editorial').innerText = editorial;
+        document.getElementById('product-modal-bodega').innerText = bodega;
+        document.getElementById('product-modal-stock').innerText = stock;
+        productModal.classList.remove('hidden');
+    }
+
+    function confirmAction() {
+        const modal = document.getElementById('modal');
+        const action = modal.dataset.action;
+        const productName = modal.dataset.productName;
+        const price = modal.dataset.price;
+        const productId = modal.dataset.productId;
+
+        if (action === 'comprar' || action === 'arrendar') {
+            addToCart(productName, price, productId);
+        }
+
+        closeModal();
     }
 </script>
 

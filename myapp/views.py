@@ -10,6 +10,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import Producto, Transaccion, DetalleTransaccion
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Producto, Transaccion, DetalleTransaccion
+import json
 
 
 
@@ -78,6 +88,37 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+@login_required
+@csrf_exempt
+def confirmar_pago(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            carrito = data.get('carrito', [])
+            tipo = data.get('tipo')  # 'C' para compra, 'A' para arriendo
+            total = data.get('total')
+
+            transaccion = Transaccion.objects.create(usuario=request.user, tipo=tipo, total=total)
+
+            stock_actualizado = {}
+
+            for item in carrito:
+                producto_id = item['id']
+                cantidad = item['cantidad']
+                precio = item['precio']
+                producto = Producto.objects.get(id=producto_id)
+                if producto.cantidad_en_stock < cantidad:
+                    return JsonResponse({'status': 'error', 'message': 'Stock insuficiente'}, status=400)
+                producto.cantidad_en_stock -= cantidad
+                producto.save()
+                stock_actualizado[producto_id] = producto.cantidad_en_stock
+                DetalleTransaccion.objects.create(transaccion=transaccion, producto=producto, cantidad=cantidad, precio=precio)
+
+            return JsonResponse({'status': 'success', 'stock_actualizado': stock_actualizado})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
 
 
 

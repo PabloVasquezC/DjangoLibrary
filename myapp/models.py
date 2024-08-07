@@ -14,7 +14,7 @@ class Autor(models.Model):
 
     def __str__(self):
         return self.nombre
-    
+
 class Bodega(models.Model):
     nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=255)
@@ -69,3 +69,28 @@ class DetalleMovimiento(models.Model):
 
     def __str__(self):
         return f"{self.producto} - Cantidad: {self.cantidad}"
+
+class Transaccion(models.Model):
+    COMPRA = 'C'
+    ARRIENDO = 'A'
+    TIPO_TRANSACCION = [
+        (COMPRA, 'Compra'),
+        (ARRIENDO, 'Arriendo'),
+    ]
+
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+    tipo = models.CharField(max_length=1, choices=TIPO_TRANSACCION)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.get_tipo_display()} - {self.usuario.username} - {self.fecha}"
+
+class DetalleTransaccion(models.Model):
+    transaccion = models.ForeignKey(Transaccion, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.transaccion} - {self.producto.nombre} - {self.cantidad}"

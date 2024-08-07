@@ -37,10 +37,10 @@
 {% else %}
     <div class="flex flex-col items-center bg-white text-black p-4 rounded-xl">
         <!-- Formulario de inicio de sesión -->
-        <form method="post" action="{% url 'login' %}" class="w-full max-w-xs">
+        <form method="post" action="{% url 'login' %}" class="w-full max-w-xs flex flex-col">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black border border-white">Iniciar sesión</button>
+            <button type="submit" class="bg-black w-20 text-2xl mx-60 p-2 text-white rounded transition hover:bg-white hover:text-black border border-white">Iniciar sesión</button>
         </form>
         
         <p>O</p>

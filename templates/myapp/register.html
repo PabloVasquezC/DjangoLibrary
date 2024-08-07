@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<h2>Regístrate</h2>
+<h2 class="text-white font-bold text-4xl mb-6">Regístrate</h2>
 <form class="bg-white rounded flex flex-col p-4" method="post">
     {% csrf_token %}
     {{ form.as_p }}
