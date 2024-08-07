@@ -19,22 +19,34 @@
 
 {% if user.is_authenticated %}
     <h1 class="bg-black text-white shadow shadow-white p-2 text-3xl rounded-lg">Ya has iniciado sesión 😉.</h1>
- 
-    <!-- Cerrar sesión -->
-    <div class="bg-white rounded p-4 m-4 flex">
-        <p class="text-2xl">Si deseas cerrar sesión o administrar productos, entra al panel de administración.</p>
-        <a href="{% url 'admin:index' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black hover:border-black">Ir al panel de administración</a>
+
+    <div class="bg-white rounded p-4 m-4 flex flex-col items-center">
+        <p class="text-2xl">Si deseas cerrar sesión, puedes hacerlo aquí:</p>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="bg-black text-2xl py-2 px-4 text-white rounded transition hover:bg-white hover:text-black hover:border-black">Cerrar sesión</button>
+        </form>
+
+        {% if user.is_staff %}
+        <!-- Botón para el panel de administración visible solo para staff -->
+        <div class="mt-4">
+            <a href="{% url 'admin:index' %}" class="bg-blue-500 text-2xl py-2 px-4 text-white rounded transition hover:bg-blue-700">Panel de Administración</a>
+        </div>
+        {% endif %}
     </div>
 {% else %}
-    <div class="flex flex-col items-center">
-        <a href="{% url 'register' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Crear Cuenta</a>
-        
+    <div class="flex flex-col items-center bg-white text-black p-4 rounded-xl">
         <!-- Formulario de inicio de sesión -->
         <form method="post" action="{% url 'login' %}" class="w-full max-w-xs">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black">Iniciar sesión</button>
+            <button type="submit" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black border border-white">Iniciar sesión</button>
         </form>
+        
+        <p>O</p>
+
+        <a href="{% url 'register' %}" class="bg-black text-2xl m-4 p-2 text-white rounded transition hover:bg-white hover:text-black border border-white">Crear Cuenta</a>
+        
     </div>
 {% endif %}
 {% endblock %}

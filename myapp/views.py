@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import logout
+
 
 
 
@@ -71,6 +73,11 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'myapp/register.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 
 
