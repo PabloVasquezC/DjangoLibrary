@@ -9,40 +9,41 @@
     
     <section class="mt-[300px] flex flex-row flex-wrap justify-center sticky">
         {% for producto in productos %}
-        <div id="card" class="cursor-pointer card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2" onclick="showProductDetails('{{ producto.nombre }}', '{{ producto.fotoLink }}', '{{ producto.descripcion }}', '{{ producto.precio_venta }}', '{{ producto.precio_arriendo }}', '{{ producto.editorial }}', '{{ producto.bodega }}', '{{ producto.cantidad_en_stock }}')">
-            <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
-            <hr class="border border-gray mr-2 my-2">
+<div id="card" class="cursor-pointer card mx-10 bg-white w-[450px] h-auto flex-col border border-black shadow-lg hover:shadow-xl shadow-white mx-26 my-16 rounded-xl pb-2" onclick="showProductDetails('{{ producto.nombre }}', '{{ producto.fotoLink }}', '{{ producto.descripcion }}', '{{ producto.precio_venta }}', '{{ producto.precio_arriendo }}', '{{ producto.editorial }}', '{{ producto.bodega }}', '{{ producto.cantidad_en_stock }}')">
+    <h2 class="text-2xl text-center font-bold text-gray-800 mt-3">{{ producto.nombre }}</h2>
+    <hr class="border border-gray mr-2 my-2">
 
-            <div class="flex">
-                <div class="flex flex-col">
-                    <img src="{{ producto.fotoLink }}" class="card-img-top h-60 rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
-                    <h3 class="font-bold mx-2">Autor(es): </h3>
-                    {% for autor in producto.autores.all %}
-                        <p class="bold mx-2"> {{ autor.nombre }}</p> 
-                    {% endfor %}
-                    <hr class="border border-gray mr-2 my-2">
-                    <p class="font-bold mx-2">Editorial:</p>
-                    <p class="mx-2">{{ producto.editorial }}</p>
-                </div>
-                <div class="card-body">
-                    <p class="font-bold">Precio: </p>
-                    <p>Venta ${{ producto.precio_venta }}</p>
-                    <p>Arriendo ${{ producto.precio_arriendo }}</p>
-                    <hr class="border border-gray mr-2 my-2">
-                    <p class="font-bold">Bodega: </p>
-                    <p>{{ producto.bodega }}</p>
-                    <hr class="border border-gray mr-2 my-2">
-                    <p class="font-bold">Stock: </p>
-                    <p>{{producto.cantidad_en_stock}}</p>
-                    <hr class="border border-gray mr-2 my-2">
-                    <div class="flex flex-col my-8">
-                        <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('comprar', '{{ producto.nombre }}', {{ producto.precio_venta }})">Añadir Compra</button>
-                        <button class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('arrendar', '{{ producto.nombre }}', {{ producto.precio_arriendo }})">Añadir Arriendo</button>
-                    </div>
-                </div>
+    <div class="flex">
+        <div class="flex flex-col">
+            <img src="{{ producto.fotoLink }}" class="card-img-top h-60 rounded-xl my-auto mx-2" alt="{{ producto.nombre }}">
+            <h3 class="font-bold mx-2">Autor(es): </h3>
+            {% for autor in producto.autores.all %}
+                <p class="bold mx-2"> {{ autor.nombre }}</p> 
+            {% endfor %}
+            <hr class="border border-gray mr-2 my-2">
+            <p class="font-bold mx-2">Editorial:</p>
+            <p class="mx-2">{{ producto.editorial }}</p>
+        </div>
+        <div class="card-body">
+            <p class="font-bold">Precio: </p>
+            <p>Venta ${{ producto.precio_venta }}</p>
+            <p>Arriendo ${{ producto.precio_arriendo }}</p>
+            <hr class="border border-gray mr-2 my-2">
+            <p class="font-bold">Bodega: </p>
+            <p>{{ producto.bodega }}</p>
+            <hr class="border border-gray mr-2 my-2">
+            <p class="font-bold">Stock: </p>
+            <p id="stock-{{ producto.id }}">{{ producto.cantidad_en_stock }}</p> <!-- Aquí se asegura el identificador único -->
+            <hr class="border border-gray mr-2 my-2">
+            <div class="flex flex-col my-8">
+                <button class="bg-green-500 p-1 rounded shadow shadow-black hover:bg-green-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('comprar', '{{ producto.nombre }}', {{ producto.precio_venta }}, {{ producto.id }})">Añadir Compra</button>
+                <button class="mt-2 bg-blue-500 p-1 rounded shadow shadow-black hover:bg-blue-600 hover:shadow-lg" onclick="event.stopPropagation(); openModal('arrendar', '{{ producto.nombre }}', {{ producto.precio_arriendo }}, {{ producto.id }})">Añadir Arriendo</button>
             </div>
         </div>
-        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
     </section>
 </div>
 
@@ -92,98 +93,152 @@
 </div>
 
 <script>
-let cart = [];
-let totalAmount = 0;
+    // Declarar variables globales
+    let totalAmount = 0;
+    let cart = [];
 
-function openModal(action, productName, price) {
-    console.log("openModal called with action:", action, "and productName:", productName, "and price:", price);
-    const modal = document.getElementById('modal');
-    const title = document.getElementById('modal-title');
-    const message = document.getElementById('modal-message');
-    
-    modal.dataset.action = action;
-    modal.dataset.productName = productName;
-    modal.dataset.price = price;
-    
-    if (action === 'comprar') {
-        title.innerText = 'Confirmar Compra';
-        message.innerText = `¿Estás seguro de que deseas añadir el producto "${productName}" a tu carrito?`;
-    } else if (action === 'arrendar') {
-        title.innerText = 'Confirmar Arriendo';
-        message.innerText = `¿Estás seguro de que deseas añadir el producto "${productName}" a tu carrito ?`;
-    }
-    
-    modal.classList.remove('hidden');
-}
-
-function closeModal() {
-    console.log("closeModal called");
-    const modal = document.getElementById('modal');
-    modal.classList.add('hidden');
-}
-
-function confirmAction() {
-    console.log("confirmAction called");
-    const modal = document.getElementById('modal');
-    const action = modal.dataset.action;
-    const productName = modal.dataset.productName;
-    const price = parseFloat(modal.dataset.price);
-
-    console.log("Action:", action, "Product Name:", productName, "Price:", price);
-
-    // Actualizar el carrito
-    const cart = document.getElementById('cart-items');
-    if (cart) {
-        console.log("Updating cart with action:", action, "and product:", productName, "price:", price);
-        const cartItem = document.createElement('div');
-        cartItem.className = 'p-2 border-b';
-        cartItem.innerText = `${action.charAt(0).toUpperCase() + action.slice(1)}: ${productName} - $${price}`;
-        cart.appendChild(cartItem);
-
-        // Remove "Tu carrito está vacío." if it exists
-        const emptyMessage = cart.querySelector('.text-gray-500');
-        if (emptyMessage) {
-            emptyMessage.remove();
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '='))
+                {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
         }
-
-        // Actualizar el total
-        totalAmount += price;
-        document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
-    } else {
-        console.error("Cart element not found");
+        return cookieValue;
     }
-    
-    // Mostrar mensaje de éxito
-    const successMessage = document.getElementById('success-message');
-    if (successMessage) {
-        successMessage.classList.remove('hidden');
-        setTimeout(() => {
-            successMessage.classList.add('hidden');
-        }, 3000);
-    } else {
-        console.error("Success message element not found");
+
+    const csrftoken = getCookie('csrftoken');
+
+    function openModal(action, productName, price, productId) {
+        console.log("openModal called with action:", action, "and productName:", productName, "and price:", price, "and productId:", productId);
+        const modal = document.getElementById('modal');
+        const title = document.getElementById('modal-title');
+        const message = document.getElementById('modal-message');
+        
+        modal.dataset.action = action;
+        modal.dataset.productName = productName;
+        modal.dataset.price = price;
+        modal.dataset.productId = productId;
+        
+        if (action === 'comprar') {
+            title.innerText = 'Confirmar Compra';
+            message.innerText = `¿Estás seguro de que deseas añadir el producto "${productName}" a tu carrito?`;
+        } else if (action === 'arrendar') {
+            title.innerText = 'Confirmar Arriendo';
+            message.innerText = `¿Estás seguro de que deseas añadir el producto "${productName}" a tu carrito?`;
+        }
+        
+        modal.classList.remove('hidden');
     }
-    
-    closeModal();
-}
 
-function showProductDetails(name, image, description, priceVenta, priceArriendo, editorial, bodega, stock) {
-    const productModal = document.getElementById('product-modal');
-    document.getElementById('product-modal-title').innerText = name;
-    document.getElementById('product-modal-image').src = image;
-    document.getElementById('product-modal-description').innerText = description;
-    document.getElementById('product-modal-price-venta').innerText = priceVenta;
-    document.getElementById('product-modal-price-arriendo').innerText = priceArriendo;
-    document.getElementById('product-modal-editorial').innerText = editorial;
-    document.getElementById('product-modal-bodega').innerText = bodega;
-    document.getElementById('product-modal-stock').innerText = stock;
-    
-    productModal.classList.remove('hidden');
-}
+    function closeModal() {
+        console.log("closeModal called");
+        const modal = document.getElementById('modal');
+        modal.classList.add('hidden');
+    }
 
-function closeProductModal() {
-    const productModal = document.getElementById('product-modal');
-    productModal.classList.add('hidden');
-}
+    function confirmAction() {
+        console.log("confirmAction called");
+        const modal = document.getElementById('modal');
+        const action = modal.dataset.action;
+        const productName = modal.dataset.productName;
+        const price = parseFloat(modal.dataset.price);
+        const productId = modal.dataset.productId;
+
+        console.log("Action:", action, "Product Name:", productName, "Price:", price, "ProductId:", productId);
+
+        // Realizar una solicitud AJAX para actualizar el stock
+        fetch("{% url 'actualizar_stock' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                action: action
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Actualizar el carrito
+                const cart = document.getElementById('cart-items');
+                const cartItem = document.createElement('div');
+                cartItem.className = 'p-2 border-b';
+                cartItem.innerText = `${action.charAt(0).toUpperCase() + action.slice(1)}: ${productName} - $${price}`;
+                cart.appendChild(cartItem);
+
+                // Remove "Tu carrito está vacío." if it exists
+                const emptyMessage = cart.querySelector('.text-gray-500');
+                if (emptyMessage) {
+                    emptyMessage.remove();
+                }
+
+                // Actualizar el total
+                totalAmount += price;
+                document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
+
+                // Mostrar mensaje de éxito
+                const successMessage = document.getElementById('success-message');
+                successMessage.classList.remove('hidden');
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 3000);
+
+                // Actualizar el stock en el modal del producto
+                document.getElementById('product-modal-stock').innerText = data.stock;
+
+                // Actualizar el stock en el catálogo
+                const stockElement = document.getElementById(`stock-${productId}`);
+                if (stockElement) {
+                    stockElement.innerText = data.stock;
+
+                    // Verificar si el producto está sin stock
+                    if (data.stock === 0) {
+                        stockElement.innerText = "Sin stock";
+                        // Deshabilitar botones de compra/arriendo
+                        const buttons = stockElement.closest('.card').querySelectorAll('button');
+                        buttons.forEach(button => button.disabled = true);
+                    }
+                } else {
+                    console.error(`No se encontró el elemento con ID stock-${productId}`);
+                }
+
+                closeModal();
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    function showProductDetails(name, image, description, priceVenta, priceArriendo, editorial, bodega, stock) {
+        const productModal = document.getElementById('product-modal');
+        document.getElementById('product-modal-title').innerText = name;
+        document.getElementById('product-modal-image').src = image;
+        document.getElementById('product-modal-description').innerText = description;
+        document.getElementById('product-modal-price-venta').innerText = priceVenta;
+        document.getElementById('product-modal-price-arriendo').innerText = priceArriendo;
+        document.getElementById('product-modal-editorial').innerText = editorial;
+        document.getElementById('product-modal-bodega').innerText = bodega;
+        document.getElementById('product-modal-stock').innerText = stock;
+        
+        productModal.classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+        const productModal = document.getElementById('product-modal');
+        productModal.classList.add('hidden');
+    }
 </script>
+
+
 {% endblock %}

@@ -1,10 +1,9 @@
 from django.db.models import Count
-from django.shortcuts import render
-from myapp.models import Editorial, Producto, Bodega
-from django.http import HttpResponse
-
-
-
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_protect
+from .models import Editorial, Producto, Bodega
+import json
 
 def home(request):
     hero_image = 'images/heroHome.jpg'
@@ -23,10 +22,8 @@ def publishers(request):
 
 def catalog(request):
     productos = Producto.objects.all()
-    return render(request, 'myapp/catalog.html',{
+    return render(request, 'myapp/catalog.html', {
         'productos': productos,
-
-    
     })
 
 def warehouses(request):
@@ -41,3 +38,19 @@ def login(request):
     return render(request, 'myapp/login.html', {
         'app_name': 'myapp',    
     })
+
+@csrf_protect
+def actualizar_stock(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        action = data.get('action')
+        product = get_object_or_404(Producto, id=product_id)
+
+        if product.cantidad_en_stock > 0:
+            product.cantidad_en_stock -= 1
+            product.save()
+            return JsonResponse({"success": True, "stock": product.cantidad_en_stock})
+        else:
+            return JsonResponse({"success": False, "error": "El producto no está disponible en stock."})
+    return JsonResponse({"success": False, "error": "Método no permitido."})
