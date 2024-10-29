@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-8+i$!8&2c#c9dbmx)bxrg93c+nj@q(34yxitg-%7*#kf#jwjah
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'https://libreria-el-poeta-7ff5f0a1c803.herokuapp.com/'
+    'libreria-el-poeta-7ff5f0a1c803.herokuapp.com/'
 ]
 
 
