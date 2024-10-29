@@ -1,60 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reseteo de box-sizing */
 * {
     box-sizing: border-box;
-    
 }
 
-
-
+/* Efecto de sombra al pasar el mouse sobre el logo */
 #logo-section:hover {
-    box-shadow:  4px 7px 8px black;
-
-
+    @apply shadow-lg; /* Utilidad de Tailwind para sombra */
 }
 
+/* Efecto de sombra en elementos de lista al pasar el mouse */
 li:hover {
-    box-shadow:  4px 7px 8px black;
+    @apply shadow-lg; /* Utilidad de Tailwind para sombra */
 }
 
 /* Filas impares */
 .table-striped tr:nth-child(odd) {
-    background-color: white;
-    cursor: pointer;    
-    
+    @apply bg-white cursor-pointer; /* Utilidades de Tailwind para fondo y cursor */
 }
 
 /* Filas pares */
 .table-striped tr:nth-child(even) {
-    background-color: #b3ecff; 
-    cursor: pointer;
+    @apply bg-blue-100 cursor-pointer; /* Utilidades de Tailwind para fondo y cursor */
 }
 
-
-
+/* Estilos del card con animaciones */
 section #card {
     animation: reveal-right linear both;
     animation-timeline: view();
     animation-range: entry 20% cover 30%;
     transition: all 0.5s ease-in-out;
-    
-
-    :hover {
-        transition: 0.5ms;
-    }
-
 }
 
+/* Hover para card */
 #card:hover {
     transition: all 0.5s ease-in-out;
 }
 
-
-
-
-
-
-
-
-
+/* Animación personalizada */
 @keyframes reveal-right {
     0% {
         transform: translateY(50px);
