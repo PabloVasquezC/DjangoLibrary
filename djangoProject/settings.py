@@ -1,6 +1,10 @@
 
 
-from pathlib import Path
+from pathlib import 
+import dj_database_url
+from decouple import config
+
+
 
 
 
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
 TAILWIND_APP_NAME = 'theme'
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,10 +87,8 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
+
 }
 
 
