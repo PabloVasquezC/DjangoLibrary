@@ -25,7 +25,7 @@ NPM_BIN_PATH = 'C:/Program Files/nodejs'
 SECRET_KEY = 'django-insecure-8+i$!8&2c#c9dbmx)bxrg93c+nj@q(34yxitg-%7*#kf#jwjah'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'libreria-el-poeta-7ff5f0a1c803.herokuapp.com/'
@@ -33,7 +33,6 @@ ALLOWED_HOSTS = [
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -83,12 +82,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
-
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 
