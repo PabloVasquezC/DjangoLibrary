@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'libreria-el-poeta-7ff5f0a1c803.herokuapp.com',
-    'https://elpoetalibrary-ayfjfdashtdeepcd.canadacentral-01.azurewebsites.net/'
+    'elpoetalibrary-ayfjfdashtdeepcd.canadacentral-01.azurewebsites.net'
     ]
 
 
