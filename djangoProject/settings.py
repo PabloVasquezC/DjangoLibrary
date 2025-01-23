@@ -1,5 +1,6 @@
 
 
+import os
 from pathlib import Path
 import dj_database_url
 from decouple import config
@@ -27,7 +28,10 @@ SECRET_KEY = 'django-insecure-8+i$!8&2c#c9dbmx)bxrg93c+nj@q(34yxitg-%7*#kf#jwjah
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['libreria-el-poeta-7ff5f0a1c803.herokuapp.com']
+ALLOWED_HOSTS = [
+    'libreria-el-poeta-7ff5f0a1c803.herokuapp.com',
+    'https://elpoetalibrary-ayfjfdashtdeepcd.canadacentral-01.azurewebsites.net/'
+    ]
 
 
 # Application definition
@@ -82,9 +86,22 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='nombre_base_de_datos'),
+        'USER': config('DB_USER', default='usuario'),
+        'PASSWORD': config('DB_PASSWORD', default='contraseña'),
+        'HOST': config('DB_HOST', default='127.0.0.1'),
+        'PORT': config('DB_PORT', default='5432'),
+        'OPTIONS': {
+            'sslmode': 'disable',  # Solo en local
+        },
+    }
 }
 
+# Si estás en Heroku, sobrescribe la configuración anterior
+if 'HEROKU' in os.environ:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
